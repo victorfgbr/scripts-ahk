@@ -1,4 +1,6 @@
 #MaxThreadsPerHotkey 5
+#HotkeyInterval 2000  ; This is the default value (milliseconds).
+#MaxHotkeysPerInterval 500
 
 ; ### HOTKEY SETTINGS #################################################
 
