@@ -174,17 +174,15 @@ f15::
     ForceAttack := "SD"
     return  
 }
-;f16::
-;{
-;    if not KeepWinZRunning {
-;        ControlSend, ahk_parent, {f16}, ahk_exe client.exe
-;        Sleep 45
-;        MouseClick, left
-;        return
-;    }
-;    ForceAttack := "AVALANCHE"
-;    return  
-;}
+f16::
+{
+    if not KeepWinZRunning {
+        attack_avalanche()
+        return
+    }
+    ForceAttack := "AVALANCHE"
+    return
+}
 f17::
 {
     if not KeepWinZRunning {
@@ -235,6 +233,12 @@ usar_mana(ForceMana, UseMana) {
     }
 }
 
+attack_avalanche() {
+    ControlSend, ahk_parent, {f16}, ahk_exe client.exe
+    Sleep 45
+    MouseClick, left
+}
+
 force_attack(ForceAttack) {
     switch ForceAttack
     {
@@ -243,9 +247,7 @@ force_attack(ForceAttack) {
             return
 
         case "AVALANCHE":
-            ControlSend, ahk_parent, {f16}, ahk_exe client.exe
-            Sleep 45
-            MouseClick, left
+            attack_avalanche()
             return
 
         case "TERA_HUR":
@@ -286,9 +288,7 @@ attack_3(ForceAttack, AttackMode) {
                 ControlSend, ahk_parent, {f7}, ahk_exe client.exe
     
             case "AVALANCHE":
-                ControlSend, ahk_parent, {f16}, ahk_exe client.exe
-                Sleep 45
-                MouseClick, left
+                attack_avalanche()
     
             case "SD":
                 ControlSend, ahk_parent, {f15}, ahk_exe client.exe
@@ -315,9 +315,7 @@ attack_2(ForceAttack, AttackMode) {
                 ControlSend, ahk_parent, {f7}, ahk_exe client.exe
 
             case "AVALANCHE":
-                ControlSend, ahk_parent, {f16}, ahk_exe client.exe
-                Sleep 45
-                MouseClick, left
+                attack_avalanche()
 
             case "SD":
                 ControlSend, ahk_parent, {f15}, ahk_exe client.exe
@@ -340,14 +338,10 @@ attack_1(ForceAttack, AttackMode) {
                 ControlSend, ahk_parent, {f17}, ahk_exe client.exe
 
             case "TERAHUR_AVALANCHE":
-                ControlSend, ahk_parent, {f16}, ahk_exe client.exe
-                Sleep 45
-                MouseClick, left
+                attack_avalanche()
 
             case "AVALANCHE":
-                ControlSend, ahk_parent, {f16}, ahk_exe client.exe
-                Sleep 45
-                MouseClick, left
+                attack_avalanche()
 
             case "SD":
                 ControlSend, ahk_parent, {f15}, ahk_exe client.exe
