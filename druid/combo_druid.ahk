@@ -219,6 +219,15 @@ f20::
     ForceAttack := "UE"
     return  
 }
+f21::
+{
+    if not KeepWinZRunning {
+        attack_mato()
+        return
+    }
+    ForceAttack := "MATO"
+    return
+}
 
 ; ### FUNÇÕES #########################################################
 
@@ -231,6 +240,12 @@ usar_mana(ForceMana, UseMana) {
     if UseMana {
         ControlSend, ahk_parent, {f7}, ahk_exe client.exe
     }
+}
+
+attack_mato() {
+    ControlSend, ahk_parent, {f21}, ahk_exe client.exe
+    Sleep 45
+    MouseClick, left
 }
 
 attack_avalanche() {
@@ -264,6 +279,10 @@ force_attack(ForceAttack) {
 
         case "UE":
             ControlSend, ahk_parent, {f20}, ahk_exe client.exe
+            return
+
+        case "MATO":
+            attack_mato()
             return
     }
 }
