@@ -38,8 +38,6 @@ Antiban1() {
 	ControlSend, ahk_parent, {f17}, ahk_exe client.exe
 	
 	; Pot
-	Sleep, 500
-	ControlSend, ahk_parent, {f21}, ahk_exe client.exe
 	Sleep, 2050
 	ControlSend, ahk_parent, {f21}, ahk_exe client.exe
 	
