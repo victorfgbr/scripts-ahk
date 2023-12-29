@@ -3,13 +3,20 @@
 #MaxHotkeysPerInterval 500
 
 ; ### HOTKEY SETTINGS #################################################
+RemoveToolTip:
+ToolTip
+return
 
 ; ######### Mana Potion On/Off #########
 NumpadAdd:: 
 {
     if not UseMana {
+        ToolTip, Mana Ligado
+        SetTimer, RemoveToolTip, -2000
         UseMana := true
     } else {
+        ToolTip, Mana Desligado
+        SetTimer, RemoveToolTip, -2000
         UseMana := false
     }
     return
@@ -19,26 +26,36 @@ NumpadAdd::
 ; ######### Heal modes #########
 Numpad0:: 
 {
+    ToolTip, Cura Desligada
+    SetTimer, RemoveToolTip, -2000
     CuraMode := "NONE"
     return
 }
 Numpad1:: 
 {
+    ToolTip, Cura Full Sio
+    SetTimer, RemoveToolTip, -2000
     CuraMode := "AUTO_SIO"
     return
 }
 Numpad2:: 
 {
+    ToolTip, Cura Vita MasRes
+    SetTimer, RemoveToolTip, -2000
     CuraMode := "VITA_MASRES"
     return
 }
 Numpad3:: 
 {
+    ToolTip, Cura Sio MasRes
+    SetTimer, RemoveToolTip, -2000
     CuraMode := "SIO_MASRES"
     return
 }
 Numpad4:: 
 {
+    ToolTip, Cura MasRes
+    SetTimer, RemoveToolTip, -2000
     CuraMode := "MASRES"
     return
 }
@@ -140,26 +157,36 @@ f::
 ; ### Attack modes #########
 Numpad5:: 
 {
+    ToolTip, Attack ROTACAO
+    SetTimer, RemoveToolTip, -2000
     AttackMode := "ROTACAO"
     return
 }
 Numpad6:: 
 {
+    ToolTip, Attack TERAHUR_AVALANCHE
+    SetTimer, RemoveToolTip, -2000
     AttackMode := "TERAHUR_AVALANCHE"
     return
 }
 Numpad7:: 
 {
+    ToolTip, Attack SD
+    SetTimer, RemoveToolTip, -2000
     AttackMode := "SD"
     return
 }
 Numpad8:: 
 {
+    ToolTip, Attack AVALANCHE
+    SetTimer, RemoveToolTip, -2000
     AttackMode := "AVALANCHE"
     return
 }
 Numpad9:: 
 {
+    ToolTip, Attack NONE
+    SetTimer, RemoveToolTip, -2000
     AttackMode := "NONE"
     return
 }
