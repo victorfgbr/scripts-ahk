@@ -74,7 +74,7 @@ f7::
 f6::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {3}, ahk_exe client.exe
+        cure_sio_ek()
         return
     }
     ForceCura := "SIO_EK"
@@ -83,7 +83,7 @@ f6::
 f13::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {1}, ahk_exe client.exe
+        cure_vita()
         return
     }
     ForceCura := "VITA"
@@ -92,7 +92,7 @@ f13::
 f14::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {2}, ahk_exe client.exe
+        cure_masres()
         return
     }
     ForceCura := "MASRES"
@@ -101,7 +101,7 @@ f14::
 f::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {f}, ahk_exe client.exe
+        cure_vita()
         return
     }
     ForceCura := "VITA"
@@ -110,7 +110,7 @@ f::
 1::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {1}, ahk_exe client.exe
+        cure_vita()
         return
     }
     ForceCura := "VITA"
@@ -119,7 +119,7 @@ f::
 2::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {2}, ahk_exe client.exe
+        cure_masres()
         return
     }
     ForceCura := "MASRES"
@@ -128,7 +128,7 @@ f::
 3::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {3}, ahk_exe client.exe
+        cure_sio_ek()
         return
     }
     ForceCura := "SIO_EK"
@@ -137,7 +137,7 @@ f::
 4:: 
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {4}, ahk_exe client.exe
+        cure_sio_rp()
         return
     }
     ForceCura := "SIO_RP"
@@ -146,7 +146,7 @@ f::
 5:: 
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {5}, ahk_exe client.exe
+        cure_gran_sio()
         return
     }
     ForceCura := "GRAN_SIO_EK"
@@ -195,7 +195,7 @@ Numpad9::
 f15::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {f15}, ahk_exe client.exe
+        attack_sd()
         return
     }
     ForceAttack := "SD"
@@ -213,7 +213,7 @@ f16::
 f17::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {f17}, ahk_exe client.exe
+        attack_terahur()
         return
     }
     ForceAttack := "TERA_HUR"
@@ -222,7 +222,7 @@ f17::
 f18::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {f18}, ahk_exe client.exe
+        attack_frigo_hur()
         return
     }
     ForceAttack := "FRIGO_HUR"
@@ -231,7 +231,7 @@ f18::
 f19::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {f19}, ahk_exe client.exe
+        attack_exevoulu()
         return
     }
     ForceAttack := "EXEVO_ULU"
@@ -240,21 +240,12 @@ f19::
 f20::
 {
     if not KeepWinZRunning {
-        ControlSend, ahk_parent, {f20}, ahk_exe client.exe
+        attack_ue()
         return
     }
     ForceAttack := "UE"
     return  
 }
-;f21::
-;{
-;    if not KeepWinZRunning {
-;        attack_mato()
-;        return
-;    }
-;    ForceAttack := "MATO"
-;    return
-;}
 
 ; ### FUNÇÕES #########################################################
 
@@ -271,21 +262,69 @@ usar_mana(ForceMana, UseMana) {
 
 attack_mato() {
     ControlSend, ahk_parent, {f21}, ahk_exe client.exe
-    Sleep 45
+    Sleep 60
     MouseClick, left
 }
 
 attack_avalanche() {
     ControlSend, ahk_parent, {f16}, ahk_exe client.exe
-    Sleep 45
+    Sleep 60
     MouseClick, left
+}
+
+attack_terahur() {
+    ControlSend, ahk_parent, {f17}, ahk_exe client.exe
+    Sleep 60
+    ControlSend, ahk_parent, {f7}, ahk_exe client.exe
+}
+
+attack_exevoulu() {
+    ControlSend, ahk_parent, {f19}, ahk_exe client.exe
+    Sleep 60
+    ControlSend, ahk_parent, {f7}, ahk_exe client.exe
+}
+
+attack_ue() {
+    ControlSend, ahk_parent, {f20}, ahk_exe client.exe
+    Sleep 60
+    ControlSend, ahk_parent, {f7}, ahk_exe client.exe
+}
+
+attack_sd() {
+    ControlSend, ahk_parent, {f15}, ahk_exe client.exe
+}
+
+attack_frigo_hur() {
+    ControlSend, ahk_parent, {f18}, ahk_exe client.exe
+}
+
+cure_gran_sio() {
+    ControlSend, ahk_parent, {5}, ahk_exe client.exe
+}
+
+cure_sio_rp() {
+    ControlSend, ahk_parent, {4}, ahk_exe client.exe
+}
+
+cure_sio_ek() {
+    ControlSend, ahk_parent, {3}, ahk_exe client.exe
+}
+
+cure_masres() {
+    ControlSend, ahk_parent, {2}, ahk_exe client.exe
+}
+
+cure_vita() {
+    ControlSend, ahk_parent, {9}, ahk_exe client.exe
+    Sleep 10
+    ControlSend, ahk_parent, {1}, ahk_exe client.exe
 }
 
 force_attack(ForceAttack) {
     switch ForceAttack
     {
         case "SD":
-            ControlSend, ahk_parent, {f15}, ahk_exe client.exe
+            attack_sd()
             return
 
         case "AVALANCHE":
@@ -293,19 +332,19 @@ force_attack(ForceAttack) {
             return
 
         case "TERA_HUR":
-            ControlSend, ahk_parent, {f17}, ahk_exe client.exe
+            attack_terahur()
             return
 
         case "FRIGO_HUR":
-            ControlSend, ahk_parent, {f18}, ahk_exe client.exe
+            attack_frigo_hur()
             return
 
         case "EXEVO_ULU":
-            ControlSend, ahk_parent, {f19}, ahk_exe client.exe
+            attack_exevoulu()
             return
 
         case "UE":
-            ControlSend, ahk_parent, {f20}, ahk_exe client.exe
+            attack_ue()
             return
 
         case "MATO":
@@ -326,18 +365,16 @@ attack_3(ForceAttack, AttackMode) {
         switch AttackMode
         {
             case "ROTACAO":
-                ControlSend, ahk_parent, {f15}, ahk_exe client.exe
+                attack_sd()
     
             case "TERAHUR_AVALANCHE":
-                ControlSend, ahk_parent, {f17}, ahk_exe client.exe
-                Sleep 45
-                ControlSend, ahk_parent, {f7}, ahk_exe client.exe
+                attack_terahur()
     
             case "AVALANCHE":
                 attack_avalanche()
     
             case "SD":
-                ControlSend, ahk_parent, {f15}, ahk_exe client.exe
+                attack_sd()
         }
     }
 }
@@ -353,18 +390,16 @@ attack_2(ForceAttack, AttackMode) {
         switch AttackMode
         {
             case "ROTACAO":
-                ControlSend, ahk_parent, {f18}, ahk_exe client.exe
+                attack_frigo_hur()
 
             case "TERAHUR_AVALANCHE":
-                ControlSend, ahk_parent, {f17}, ahk_exe client.exe
-                Sleep 45
-                ControlSend, ahk_parent, {f7}, ahk_exe client.exe
+                attack_terahur()
 
             case "AVALANCHE":
                 attack_avalanche()
 
             case "SD":
-                ControlSend, ahk_parent, {f15}, ahk_exe client.exe
+                attack_sd()
         }
     }
 }
@@ -381,7 +416,7 @@ attack_1(ForceAttack, AttackMode) {
         switch AttackMode
         {
             case "ROTACAO":
-                ControlSend, ahk_parent, {f17}, ahk_exe client.exe
+                attack_terahur()
 
             case "TERAHUR_AVALANCHE":
                 attack_avalanche()
@@ -390,7 +425,7 @@ attack_1(ForceAttack, AttackMode) {
                 attack_avalanche()
 
             case "SD":
-                ControlSend, ahk_parent, {f15}, ahk_exe client.exe
+                attack_sd()
         }
     }
 }
@@ -399,23 +434,23 @@ force_cure(ForceCura) {
     switch ForceCura
     {
         case "VITA":
-            ControlSend, ahk_parent, {1}, ahk_exe client.exe
+            cure_vita()
             return
 
         case "MASRES":
-            ControlSend, ahk_parent, {2}, ahk_exe client.exe
+            cure_masres()
             return
 
         case "SIO_EK":
-            ControlSend, ahk_parent, {3}, ahk_exe client.exe
+            cure_sio_ek()
             return
 
         case "SIO_RP":
-            ControlSend, ahk_parent, {4}, ahk_exe client.exe
+            cure_sio_rp()
             return
 
         case "GRAN_SIO_EK":
-            ControlSend, ahk_parent, {5}, ahk_exe client.exe
+            cure_gran_sio()
             return
     }
 }
@@ -433,16 +468,16 @@ usar_cura_1(CuraMode, ForceCura) {
         switch CuraMode
         {
             case "AUTO_SIO":
-                ControlSend, ahk_parent, {3}, ahk_exe client.exe
+                cure_sio_ek()
     
             case "VITA_MASRES":
-                ControlSend, ahk_parent, {2}, ahk_exe client.exe
+                cure_masres()
     
             case "SIO_MASRES":
-                ControlSend, ahk_parent, {3}, ahk_exe client.exe
+                cure_sio_ek()
     
             case "MASRES":
-                ControlSend, ahk_parent, {2}, ahk_exe client.exe
+                cure_masres()
         }
     }
 }
@@ -459,13 +494,13 @@ usar_cura_2(CuraMode, ForceCura) {
         switch CuraMode
         {
             case "AUTO_SIO":
-                ControlSend, ahk_parent, {3}, ahk_exe client.exe
+                cure_sio_ek()
     
             case "VITA_MASRES":
-                ControlSend, ahk_parent, {1}, ahk_exe client.exe
+                cure_vita()
     
             case "SIO_MASRES":
-                ControlSend, ahk_parent, {2}, ahk_exe client.exe
+                cure_masres()
         }
     }
 }
@@ -487,7 +522,7 @@ Loop
 
     usar_cura_1(CuraMode, ForceCura)
     ForceCura := False
-    Sleep 45
+    Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
@@ -499,7 +534,7 @@ Loop
 
     usar_cura_2(CuraMode, ForceCura)
     ForceCura := False
-    Sleep 45
+    Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
         
@@ -513,7 +548,7 @@ Loop
 
     usar_cura_1(CuraMode, ForceCura)
     ForceCura := False
-    Sleep 45
+    Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
@@ -525,7 +560,7 @@ Loop
 
     usar_cura_2(CuraMode, ForceCura)
     ForceCura := False
-    Sleep 45
+    Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
@@ -539,7 +574,7 @@ Loop
 
     usar_cura_1(CuraMode, ForceCura)
     ForceCura := False
-    Sleep 45
+    Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
@@ -551,7 +586,7 @@ Loop
 
     usar_cura_2(CuraMode, ForceCura)
     ForceCura := False
-    Sleep 45
+    Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
         
@@ -565,7 +600,7 @@ Loop
 
     usar_cura_1(CuraMode, ForceCura)
     ForceCura := False
-    Sleep 45
+    Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
@@ -577,7 +612,7 @@ Loop
 
     usar_cura_2(CuraMode, ForceCura)
     ForceCura := False
-    Sleep 45
+    Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
