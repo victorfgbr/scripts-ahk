@@ -4,7 +4,7 @@ return
 
 MyLabel:
 	MouseGetPos, xpos, ypos
-	MouseClickDrag, left, %xpos%, %ypos%, 1748, 609 
+	MouseClickDrag, left, %xpos%, %ypos%, 3292, 481 
 	sleep 10
 	Mousemove, %xpos%, %ypos%
 	sleep 100
