@@ -101,7 +101,7 @@ f14::
 f::
 {
     if not KeepWinZRunning {
-        cure_vita()
+        ControlSend, ahk_parent, {f}, ahk_exe client.exe
         return
     }
     ForceCura := "VITA"
@@ -511,9 +511,16 @@ f24::  ; Hotkey para começar o script
 
 if KeepWinZRunning  ; This means an underlying thread is already running the loop below.
 {
+    ToolTip, OFF
+    SetTimer, RemoveToolTip, -2000
     KeepWinZRunning := false  ; Signal that thread's loop to stop.
     return  ; End this thread so that the one underneath will resume and see the change made by the line above.
 }
+else {
+    ToolTip, ON
+    SetTimer, RemoveToolTip, -2000
+}
+
 ; Otherwise:
 KeepWinZRunning := true
 Loop
