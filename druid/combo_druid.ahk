@@ -277,6 +277,7 @@ usar_mana(turno, ForceMana, UseMana) {
         ControlSend, ahk_parent, {f7}, ahk_exe client.exe
         return
     }
+
     switch UseMana
     {
         case "FULL":
@@ -284,7 +285,7 @@ usar_mana(turno, ForceMana, UseMana) {
             return
 
         case "HALF":
-            if (turno = 1 or turno = 3)
+            if (InStr(turno, "1_") or InStr(turno, "3_"))
                 ControlSend, ahk_parent, {f7}, ahk_exe client.exe
             return
     }
@@ -383,8 +384,7 @@ force_attack(ForceAttack) {
     }
 }
 
-attack_3(ForceAttack, AttackMode) {
-    
+attack(turno, ForceAttack, AttackMode) {
     if ForceAttack {
         force_attack(ForceAttack)
         return
@@ -395,61 +395,18 @@ attack_3(ForceAttack, AttackMode) {
         switch AttackMode
         {
             case "ROTACAO":
-                attack_sd()
-    
-            case "TERAHUR_AVALANCHE":
-                attack_terahur()
-    
-            case "AVALANCHE":
-                attack_avalanche()
-    
-            case "SD":
-                attack_sd()
-        }
-    }
-}
-
-attack_2(ForceAttack, AttackMode) {
-    
-    if ForceAttack {
-        force_attack(ForceAttack)
-        return
-    }
-
-    if AttackMode {
-        switch AttackMode
-        {
-            case "ROTACAO":
-                attack_frigo_hur()
+                if (InStr(turno, "1_") or InStr(turno, "3_"))
+                    attack_terahur()
+                if (InStr(turno, "2_"))
+                    attack_frigo_hur()
+                if (InStr(turno, "4_"))
+                    attack_sd()
 
             case "TERAHUR_AVALANCHE":
-                attack_terahur()
-
-            case "AVALANCHE":
-                attack_avalanche()
-
-            case "SD":
-                attack_sd()
-        }
-    }
-}
-
-attack_1(ForceAttack, AttackMode) {
-
-    if ForceAttack {
-        force_attack(ForceAttack)
-        return
-    }
-
-    ; Select attack AttackMode
-    if AttackMode {
-        switch AttackMode
-        {
-            case "ROTACAO":
-                attack_terahur()
-
-            case "TERAHUR_AVALANCHE":
-                attack_avalanche()
+                if (InStr(turno, "1_") or InStr(turno, "3_"))
+                    attack_avalanche()
+                if (InStr(turno, "2_") or InStr(turno, "4_"))
+                    attack_terahur()
 
             case "AVALANCHE":
                 attack_avalanche()
@@ -485,7 +442,7 @@ force_cure(ForceCura) {
     }
 }
 
-usar_cura_1(CuraMode, ForceCura) {
+usar_cura(turno, CuraMode, ForceCura) {
 
     ; Modo Force Cura
     if ForceCura {
@@ -501,36 +458,21 @@ usar_cura_1(CuraMode, ForceCura) {
                 cure_sio_ek()
     
             case "VITA_MASRES":
-                cure_masres()
-    
+                if (InStr(turno, "_HALF"))
+                    cure_masres()
+                else
+                    cure_vita()
+
             case "SIO_MASRES":
-                cure_sio_ek()
-    
+                if (InStr(turno, "_HALF"))
+                    cure_masres()
+                else
+                    cure_sio_ek()
+
             case "MASRES":
-                cure_masres()
-        }
-    }
-}
+                if (InStr(turno, "_HALF"))
+                    cure_masres()
 
-usar_cura_2(CuraMode, ForceCura) {
-
-    if ForceCura {
-        force_cure(ForceCura)
-        return
-    }
-
-    ; Select attack CuraMode
-    if CuraMode {
-        switch CuraMode
-        {
-            case "AUTO_SIO":
-                cure_sio_ek()
-    
-            case "VITA_MASRES":
-                cure_vita()
-    
-            case "SIO_MASRES":
-                cure_masres()
         }
     }
 }
@@ -556,21 +498,24 @@ KeepWinZRunning := true
 Loop
 {
     ; TURNO 1 ###################################################
-    turno := 1
+    turno := "1_INIT"
 
-    usar_cura_1(CuraMode, ForceCura)
+    usar_cura(turno, CuraMode, ForceCura)
     ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack_1(ForceAttack, AttackMode)
+    attack(turno, ForceAttack, AttackMode)
     ForceAttack := False
     Sleep 1045
     if not KeepWinZRunning  ; 
         break  ; Break out of this loop.
 
-    usar_cura_2(CuraMode, ForceCura)
+    ; HALF TURNO ###
+    turno := "1_HALF"
+    
+    usar_cura(turno, CuraMode, ForceCura)
     ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
@@ -583,21 +528,24 @@ Loop
         break  ; Break out of this loop.
     
     ; TURNO 2 ###################################################
-    turno := 2
+    turno := "2_INIT"
 
-    usar_cura_1(CuraMode, ForceCura)
+    usar_cura(turno, CuraMode, ForceCura)
     ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack_2(ForceAttack, AttackMode)
+    attack(turno, ForceAttack, AttackMode)
     ForceAttack := False
     Sleep 1045
     if not KeepWinZRunning  ; 
         break  ; Break out of this loop.
 
-    usar_cura_2(CuraMode, ForceCura)
+    ; HALF TURNO ###
+    turno := "2_HALF"
+
+    usar_cura(turno, CuraMode, ForceCura)
     ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
@@ -610,21 +558,24 @@ Loop
         break  ; Break out of this loop.
 
     ; TURNO 3 ###################################################
-    turno := 3
+    turno := "3_INIT"
 
-    usar_cura_1(CuraMode, ForceCura)
+    usar_cura(turno, CuraMode, ForceCura)
     ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack_1(ForceAttack, AttackMode)
+    attack(turno, ForceAttack, AttackMode)
     ForceAttack := False
     Sleep 1045
     if not KeepWinZRunning  ; 
         break  ; Break out of this loop.
 
-    usar_cura_2(CuraMode, ForceCura)
+    ; HALF TURNO ###
+    turno := "3_HALF"
+
+    usar_cura(turno, CuraMode, ForceCura)
     ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
@@ -637,21 +588,24 @@ Loop
         break  ; Break out of this loop.
     
     ;  TURNO 4 ###################################################
-    turno := 4
+    turno := "4_INIT"
 
-    usar_cura_1(CuraMode, ForceCura)
+    usar_cura(turno, CuraMode, ForceCura)
     ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack_3(ForceAttack, AttackMode)
+    attack(turno, ForceAttack, AttackMode)
     ForceAttack := False
     Sleep 1045
     if not KeepWinZRunning  ; 
         break  ; Break out of this loop.
 
-    usar_cura_2(CuraMode, ForceCura)
+    ; HALF TURNO ###
+    turno := "4_HALF"
+
+    usar_cura(turno, CuraMode, ForceCura)
     ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
