@@ -8,12 +8,26 @@ ToolTip
 return
 
 ; ######### Mana Potion On/Off #########
+NumpadSub::
+{
+    if not UseMana {
+        ToolTip, Half Mana Ligado
+        SetTimer, RemoveToolTip, -2000
+        UseMana := "HALF"
+    } else {
+        ToolTip, Mana Desligado
+        SetTimer, RemoveToolTip, -2000
+        UseMana := false
+    }
+    return
+}
+
 NumpadAdd:: 
 {
     if not UseMana {
-        ToolTip, Mana Ligado
+        ToolTip, Full Mana Ligado
         SetTimer, RemoveToolTip, -2000
-        UseMana := true
+        UseMana := "FULL"
     } else {
         ToolTip, Mana Desligado
         SetTimer, RemoveToolTip, -2000
@@ -258,14 +272,21 @@ f21::
 
 ; ### FUNÇÕES #########################################################
 
-usar_mana(ForceMana, UseMana) {
+usar_mana(turno, ForceMana, UseMana) {
     if ForceMana {
         ControlSend, ahk_parent, {f7}, ahk_exe client.exe
         return
     }
-    
-    if UseMana {
-        ControlSend, ahk_parent, {f7}, ahk_exe client.exe
+    switch UseMana
+    {
+        case "FULL":
+            ControlSend, ahk_parent, {f7}, ahk_exe client.exe
+            return
+
+        case "HALF":
+            if (turno = 1 or turno = 3)
+                ControlSend, ahk_parent, {f7}, ahk_exe client.exe
+            return
     }
 }
 
@@ -535,6 +556,7 @@ KeepWinZRunning := true
 Loop
 {
     ; TURNO 1 ###################################################
+    turno := 1
 
     usar_cura_1(CuraMode, ForceCura)
     ForceCura := False
@@ -554,13 +576,14 @@ Loop
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
         
-    usar_mana(ForceMana, UseMana)
+    usar_mana(turno, ForceMana, UseMana)
     ForceMana := False
     Sleep 1045
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
     
     ; TURNO 2 ###################################################
+    turno := 2
 
     usar_cura_1(CuraMode, ForceCura)
     ForceCura := False
@@ -580,13 +603,14 @@ Loop
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    usar_mana(ForceMana, UseMana)
+    usar_mana(turno, ForceMana, UseMana)
     ForceMana := False
     Sleep 1045
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
     ; TURNO 3 ###################################################
+    turno := 3
 
     usar_cura_1(CuraMode, ForceCura)
     ForceCura := False
@@ -606,13 +630,14 @@ Loop
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
         
-    usar_mana(ForceMana, UseMana)
+    usar_mana(turno, ForceMana, UseMana)
     ForceMana := False
     Sleep 1045
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
     
     ;  TURNO 4 ###################################################
+    turno := 4
 
     usar_cura_1(CuraMode, ForceCura)
     ForceCura := False
@@ -632,7 +657,7 @@ Loop
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    usar_mana(ForceMana, UseMana)
+    usar_mana(turno, ForceMana, UseMana)
     ForceMana := False
     Sleep 1045
     if not KeepWinZRunning  ;
