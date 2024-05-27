@@ -246,6 +246,15 @@ f20::
     ForceAttack := "UE"
     return  
 }
+f21::
+{
+    if not KeepWinZRunning {
+        attack_mato()
+        return
+    }
+    ForceAttack := "MATO"
+    return
+}
 
 ; ### FUNÇÕES #########################################################
 
