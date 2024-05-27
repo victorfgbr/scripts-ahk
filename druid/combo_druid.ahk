@@ -10,28 +10,27 @@ return
 ; ######### Mana Potion On/Off #########
 NumpadSub::
 {
-    if not UseMana {
+    if (UseMana = "HALF") {
+        ToolTip, Mana Desligado
+        SetTimer, RemoveToolTip, -2000
+        UseMana := false
+    } else {
         ToolTip, Half Mana Ligado
         SetTimer, RemoveToolTip, -2000
         UseMana := "HALF"
-    } else {
-        ToolTip, Mana Desligado
-        SetTimer, RemoveToolTip, -2000
-        UseMana := false
     }
     return
 }
-
-NumpadAdd:: 
+NumpadAdd::
 {
-    if not UseMana {
-        ToolTip, Full Mana Ligado
-        SetTimer, RemoveToolTip, -2000
-        UseMana := "FULL"
-    } else {
+    if (UseMana = "FULL") {
         ToolTip, Mana Desligado
         SetTimer, RemoveToolTip, -2000
         UseMana := false
+    } else {
+        ToolTip, Full Mana Ligado
+        SetTimer, RemoveToolTip, -2000
+        UseMana := "FULL"
     }
     return
 }
@@ -384,13 +383,14 @@ force_attack(ForceAttack) {
     }
 }
 
-attack(turno, ForceAttack, AttackMode) {
+attack(turno, AttackMode, ByRef ForceAttack) {
     if ForceAttack {
         force_attack(ForceAttack)
+        ForceAttack := False
         return
     }
 
-    ; Select attack AttackMode
+    ; Select AttackMode
     if AttackMode {
         switch AttackMode
         {
@@ -442,15 +442,16 @@ force_cure(ForceCura) {
     }
 }
 
-usar_cura(turno, CuraMode, ForceCura) {
+usar_cura(turno, CuraMode, ByRef ForceCura) {
 
     ; Modo Force Cura
     if ForceCura {
         force_cure(ForceCura)
+        ForceCura := False
         return
     }
 
-    ; Select attack CuraMode
+    ; Select CuraMode
     if CuraMode {
         switch CuraMode
         {
@@ -501,13 +502,11 @@ Loop
     turno := "1_INIT"
 
     usar_cura(turno, CuraMode, ForceCura)
-    ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack(turno, ForceAttack, AttackMode)
-    ForceAttack := False
+    attack(turno, AttackMode, ForceAttack)
     Sleep 1045
     if not KeepWinZRunning  ; 
         break  ; Break out of this loop.
@@ -516,7 +515,6 @@ Loop
     turno := "1_HALF"
     
     usar_cura(turno, CuraMode, ForceCura)
-    ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
@@ -531,13 +529,11 @@ Loop
     turno := "2_INIT"
 
     usar_cura(turno, CuraMode, ForceCura)
-    ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack(turno, ForceAttack, AttackMode)
-    ForceAttack := False
+    attack(turno, AttackMode, ForceAttack)
     Sleep 1045
     if not KeepWinZRunning  ; 
         break  ; Break out of this loop.
@@ -546,7 +542,6 @@ Loop
     turno := "2_HALF"
 
     usar_cura(turno, CuraMode, ForceCura)
-    ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
@@ -561,13 +556,11 @@ Loop
     turno := "3_INIT"
 
     usar_cura(turno, CuraMode, ForceCura)
-    ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack(turno, ForceAttack, AttackMode)
-    ForceAttack := False
+    attack(turno, AttackMode, ForceAttack)
     Sleep 1045
     if not KeepWinZRunning  ; 
         break  ; Break out of this loop.
@@ -576,13 +569,11 @@ Loop
     turno := "3_HALF"
 
     usar_cura(turno, CuraMode, ForceCura)
-    ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
         
     usar_mana(turno, ForceMana, UseMana)
-    ForceMana := False
     Sleep 1045
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
@@ -591,13 +582,11 @@ Loop
     turno := "4_INIT"
 
     usar_cura(turno, CuraMode, ForceCura)
-    ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack(turno, ForceAttack, AttackMode)
-    ForceAttack := False
+    attack(turno, AttackMode, ForceAttack)
     Sleep 1045
     if not KeepWinZRunning  ; 
         break  ; Break out of this loop.
@@ -606,7 +595,6 @@ Loop
     turno := "4_HALF"
 
     usar_cura(turno, CuraMode, ForceCura)
-    ForceCura := False
     Sleep 60
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
