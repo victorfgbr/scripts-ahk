@@ -271,14 +271,14 @@ f21::
 
 ; ### FUNÇÕES #########################################################
 
-usar_mana(turno, ForceMana, UseMana) {
+usar_mana(turno, UseMana, ByRef ForceMana) {
     if ForceMana {
         ControlSend, ahk_parent, {f7}, ahk_exe client.exe
+        ForceMana := false
         return
     }
 
-    switch UseMana
-    {
+    switch UseMana {
         case "FULL":
             ControlSend, ahk_parent, {f7}, ahk_exe client.exe
             return
@@ -519,8 +519,7 @@ Loop
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
         
-    usar_mana(turno, ForceMana, UseMana)
-    ForceMana := False
+    usar_mana(turno, UseMana, ForceMana)
     Sleep 1045
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
@@ -546,8 +545,7 @@ Loop
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    usar_mana(turno, ForceMana, UseMana)
-    ForceMana := False
+    usar_mana(turno, UseMana, ForceMana)
     Sleep 1045
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
@@ -573,7 +571,7 @@ Loop
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
         
-    usar_mana(turno, ForceMana, UseMana)
+    usar_mana(turno, UseMana, ForceMana)
     Sleep 1045
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
@@ -599,8 +597,7 @@ Loop
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    usar_mana(turno, ForceMana, UseMana)
-    ForceMana := False
+    usar_mana(turno, UseMana, ForceMana)
     Sleep 1045
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
