@@ -128,13 +128,15 @@ func_heal(turno, ByRef context) {
                     heal_sio_rp()
             
             case "SIO_EK_RP_MASRES":
-                if (InStr(turno, "1_") or InStr(turno, "3_"))
+            case "SIO_MASRES":
+                if (InStr(turno, "_HALF"))
                     heal_masres()
-                if (InStr(turno, "2_"))
-                    heal_sio_ek()
-                if (InStr(turno, "4_"))
-                    heal_sio_rp()
-                
+                else
+                    if (InStr(turno, "1_") or InStr(turno, "3_"))
+                        heal_sio_ek()
+                    if (InStr(turno, "2_") or InStr(turno, "4_"))
+                        heal_sio_rp()
+
             case "FULL_VITA":
                 heal_vita()
 
