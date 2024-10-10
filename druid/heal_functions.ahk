@@ -1,7 +1,7 @@
 
 func_select_heal_mode(ByRef context) {
     ToolTipText := "Selecione o Modo de Cura:`n1. SIO_EK`n2. EXURA_VITA / MAS_RES`n3. SIO_EK / MAS_RES`n4. MAS_RES`n5. SIO_EK / SIO_RP`n6. SIO_EK / MAS_RES / SIO_RP / MAS_RES`n7. Full EXURA_VITA`n8. EXURA_VITA / EXURA_GRAN`n9. EXURA_GRAN"
-    ToolTip, %ToolTipText%
+    ToolTip, %ToolTipText% 
     SetTimer, RemoveToolTip, -6000
     context.select_mode := "SELECT_HEAL"
 }

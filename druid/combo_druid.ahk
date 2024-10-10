@@ -2,114 +2,168 @@
 #HotkeyInterval 2000  ; This is the default value (milliseconds).
 #MaxHotkeysPerInterval 500
 
-; ### HOTKEY SETTINGS #################################################
+SetMouseDelay, 0
+
+#Include ./attack_functions.ahk
+#Include ./heal_functions.ahk
+#Include ./mana_functions.ahk
+
+context := { select_mode: "", heal_mode: "NONE", attack_mode: "NONE", mana_mode: "NONE" }
+
 RemoveToolTip:
 ToolTip
 return
 
-; ######### Mana Potion On/Off #########
-NumpadSub::
+; Esc:: ExitApp
+
+; #########################################################
+
+Numpad1::
 {
-    if (UseMana = "HALF") {
-        ToolTip, Mana Desligado
-        SetTimer, RemoveToolTip, -2000
-        UseMana := false
-    } else {
-        ToolTip, Half Mana Ligado
-        SetTimer, RemoveToolTip, -2000
-        UseMana := "HALF"
-    }
-    return
-}
-NumpadAdd::
-{
-    if (UseMana = "FULL") {
-        ToolTip, Mana Desligado
-        SetTimer, RemoveToolTip, -2000
-        UseMana := false
-    } else {
-        ToolTip, Full Mana Ligado
-        SetTimer, RemoveToolTip, -2000
-        UseMana := "FULL"
+    switch context.select_mode
+    {
+        case "SELECT_ATTACK": func_select_attack_1(context)
+        case "SELECT_HEAL": func_select_heal_1(context)
+        case "SELECT_MANA": func_select_mana_1(context)
+        default: func_select_heal_mode(context)
     }
     return
 }
 
-
-; ######### Heal modes #########
-Numpad0:: 
+Numpad2::
 {
-    ToolTip, Cura Desligada
-    SetTimer, RemoveToolTip, -2000
-    CuraMode := "NONE"
-    return
-}
-Numpad1:: 
-{
-    ToolTip, Cura Full Sio
-    SetTimer, RemoveToolTip, -2000
-    CuraMode := "AUTO_SIO"
-    return
-}
-Numpad2:: 
-{
-    ToolTip, Cura Vita MasRes
-    SetTimer, RemoveToolTip, -2000
-    CuraMode := "VITA_MASRES"
-    return
-}
-Numpad3:: 
-{
-    ToolTip, Cura Sio MasRes
-    SetTimer, RemoveToolTip, -2000
-    CuraMode := "SIO_MASRES"
-    return
-}
-Numpad4:: 
-{
-    ToolTip, Cura MasRes
-    SetTimer, RemoveToolTip, -2000
-    CuraMode := "MASRES"
+    switch context.select_mode
+    {
+        case "SELECT_ATTACK": func_select_attack_2(context)
+        case "SELECT_HEAL": func_select_heal_2(context)
+        case "SELECT_MANA": func_select_mana_2(context)
+        default: func_select_attack_mode(context)
+    }
     return
 }
 
+Numpad3::
+{
+    switch context.select_mode
+    {
+        case "SELECT_ATTACK": func_select_attack_3(context)
+        case "SELECT_HEAL": func_select_heal_3(context)
+        case "SELECT_MANA": func_select_mana_3(context)
+        default: func_select_mana_mode(context)
+    }
+    return
+}
 
-; ######### Force Cura Modes #########
+Numpad4::
+{
+    switch context.select_mode
+    {
+        case "SELECT_ATTACK": func_select_attack_4(context)
+        case "SELECT_HEAL": func_select_heal_4(context)
+        case "SELECT_MANA": func_select_mana_4(context)
+    }
+    return
+}
+
+Numpad5::
+{
+    switch context.select_mode
+    {
+        case "SELECT_ATTACK": func_select_attack_5(context)
+        case "SELECT_HEAL": func_select_heal_5(context)
+        case "SELECT_MANA": func_select_mana_5(context)
+    }
+    return
+}
+
+Numpad6::
+{
+    switch context.select_mode
+    {
+        case "SELECT_ATTACK": func_select_attack_6(context)
+        case "SELECT_HEAL": func_select_heal_6(context)
+        case "SELECT_MANA": func_select_mana_6(context)
+    }
+    return
+}
+
+Numpad7::
+{
+    switch context.select_mode
+    {
+        case "SELECT_ATTACK": func_select_attack_7(context)
+        case "SELECT_HEAL": func_select_heal_7(context)
+        case "SELECT_MANA": func_select_mana_7(context)
+    }
+    return
+}
+
+Numpad8::
+{
+    switch context.select_mode
+    {
+        case "SELECT_ATTACK": func_select_attack_8(context)
+        case "SELECT_HEAL": func_select_heal_8(context)
+        case "SELECT_MANA": func_select_mana_8(context)
+    }
+    return
+}
+
+Numpad9::
+{
+    switch context.select_mode
+    {
+        case "SELECT_ATTACK": func_select_attack_9(context)
+        case "SELECT_HEAL": func_select_heal_9(context)
+        case "SELECT_MANA": func_select_mana_9(context)
+        default:
+            if not context.get_loot {
+                ToolTip, Pegar Loot Ligado
+                SetTimer, RemoveToolTip, -2000
+                context.get_loot := true
+            } else {
+                ToolTip, Pegar Loot Desligado
+                SetTimer, RemoveToolTip, -2000
+                context.get_loot := false
+            }
+    }
+    return
+}
+
+; #########################################################
+
 f7::
 {
     if not KeepWinZRunning {
         ControlSend, ahk_parent, {f7}, ahk_exe client.exe
         return
     }
-    ForceMana := true
+    context.force_mana := true
     return
 }
 f6::
 {
+    context.force_heal := "SIO_EK"
     if not KeepWinZRunning {
-        cure_sio_ek()
-        return
+        func_force_heal(context)
     }
-    ForceCura := "SIO_EK"
     return
 }
 f13::
 {
+    context.force_heal := "VITA"
     if not KeepWinZRunning {
-        cure_vita()
-        return
+        func_force_heal(context)
     }
-    ForceCura := "VITA"
     return
 }
 f14::
 {
+    context.force_heal := "MASRES"
     if not KeepWinZRunning {
-        cure_masres()
-        return
+        func_force_heal(context)
     }
-    ForceCura := "MASRES"
-    return    
+    return
 }
 f::
 {
@@ -117,381 +171,154 @@ f::
         ControlSend, ahk_parent, {f}, ahk_exe client.exe
         return
     }
-    ForceCura := "VITA"
-    return    
+    context.force_heal := "VITA"
+    return
 }
 1::
 {
+    context.force_heal := "VITA"
     if not KeepWinZRunning {
-        cure_vita()
-        return
+        func_force_heal(context)
     }
-    ForceCura := "VITA"
-    return    
+    return
 }
 2::
 {
+    context.force_heal := "MASRES"
     if not KeepWinZRunning {
-        cure_masres()
-        return
+        func_force_heal(context)
     }
-    ForceCura := "MASRES"
-    return    
+    return
 }
 3::
 {
+    context.force_heal := "SIO_EK"
     if not KeepWinZRunning {
-        cure_sio_ek()
-        return
+        func_force_heal(context)
     }
-    ForceCura := "SIO_EK"
-    return    
+    return
 }
-4:: 
+4::
 {
+    context.force_heal := "SIO_RP"
     if not KeepWinZRunning {
-        cure_sio_rp()
-        return
+        func_force_heal(context)
     }
-    ForceCura := "SIO_RP"
     return
 }
-5:: 
+5::
 {
+    context.force_heal := "GRAN_SIO_EK"
     if not KeepWinZRunning {
-        cure_gran_sio()
-        return
+        func_force_heal(context)
     }
-    ForceCura := "GRAN_SIO_EK"
     return
 }
-
-
-; ### Attack modes #########
-Numpad5:: 
-{
-    ToolTip, Attack ROTACAO
-    SetTimer, RemoveToolTip, -2000
-    AttackMode := "ROTACAO"
-    return
-}
-Numpad6:: 
-{
-    ToolTip, Attack TERAHUR_AVALANCHE
-    SetTimer, RemoveToolTip, -2000
-    AttackMode := "TERAHUR_AVALANCHE"
-    return
-}
-Numpad7:: 
-{
-    ToolTip, Attack SD
-    SetTimer, RemoveToolTip, -2000
-    AttackMode := "SD"
-    return
-}
-Numpad8:: 
-{
-    ToolTip, Attack AVALANCHE
-    SetTimer, RemoveToolTip, -2000
-    AttackMode := "AVALANCHE"
-    return
-}
-Numpad9:: 
-{
-    ToolTip, Attack NONE
-    SetTimer, RemoveToolTip, -2000
-    AttackMode := "NONE"
-    return
-}
-
-; ######### Force Attack #########
 f15::
 {
+    context.force_attack := "SD"
     if not KeepWinZRunning {
-        attack_sd()
-        return
+        func_force_attack(context)
     }
-    ForceAttack := "SD"
-    return  
+    return
 }
 f16::
 {
+    context.force_attack := "AVALANCHE"
     if not KeepWinZRunning {
-        attack_avalanche()
-        return
+        func_force_attack(context)
     }
-    ForceAttack := "AVALANCHE"
     return
 }
 f17::
 {
+    context.force_attack := "TERA_HUR"
     if not KeepWinZRunning {
-        attack_terahur()
-        return
+        func_force_attack(context)
     }
-    ForceAttack := "TERA_HUR"
-    return  
+    return
 }
 f18::
 {
+    context.force_attack := "FRIGO_HUR"
     if not KeepWinZRunning {
-        attack_frigo_hur()
-        return
+        func_force_attack(context)
     }
-    ForceAttack := "FRIGO_HUR"
-    return  
+    return
 }
 f19::
 {
+    context.force_attack := "EXEVO_ULU"
     if not KeepWinZRunning {
-        attack_exevoulu()
-        return
+        func_force_attack(context)
     }
-    ForceAttack := "EXEVO_ULU"
-    return  
+    return
 }
 f20::
 {
+    context.force_attack := "UE"
     if not KeepWinZRunning {
-        attack_ue()
-        return
+        func_force_attack(context)
     }
-    ForceAttack := "UE"
-    return  
+    return
 }
 f21::
 {
+    context.force_attack := "MATO"
     if not KeepWinZRunning {
-        attack_mato()
-        return
+        func_force_attack(context)
     }
-    ForceAttack := "MATO"
     return
 }
 
-; ### FUNÇÕES #########################################################
+; #########################################################
 
-usar_mana(turno, UseMana, ByRef ForceMana) {
-    if ForceMana {
-        ControlSend, ahk_parent, {f7}, ahk_exe client.exe
-        ForceMana := false
-        return
+func_pegar_loot(context) {
+    if context.get_loot {
+        ControlSend, ahk_parent, {'}, ahk_exe client.exe
     }
-
-    switch UseMana {
-        case "FULL":
-            ControlSend, ahk_parent, {f7}, ahk_exe client.exe
-            return
-
-        case "HALF":
-            if (InStr(turno, "1_") or InStr(turno, "3_"))
-                ControlSend, ahk_parent, {f7}, ahk_exe client.exe
-            return
-    }
-}
-
-attack_mato() {
-    ControlSend, ahk_parent, {f21}, ahk_exe client.exe
     Sleep 60
-    MouseClick, left
 }
 
-attack_avalanche() {
-    ControlSend, ahk_parent, {f16}, ahk_exe client.exe
-    Sleep 60
-    MouseClick, left
-}
+fn_turno(turno_id, ByRef context) {
 
-attack_terahur() {
-    ControlSend, ahk_parent, {f17}, ahk_exe client.exe
-    Sleep 60
-    ControlSend, ahk_parent, {f7}, ahk_exe client.exe
-}
+    ; INIT TURNO ###
+    sub_turno_id := turno_id "_INIT"
 
-attack_exevoulu() {
-    ControlSend, ahk_parent, {f19}, ahk_exe client.exe
-    Sleep 60
-    ControlSend, ahk_parent, {f7}, ahk_exe client.exe
-}
+    func_heal(sub_turno_id, context)
 
-attack_ue() {
-    ControlSend, ahk_parent, {f20}, ahk_exe client.exe
-    Sleep 60
-    ControlSend, ahk_parent, {f7}, ahk_exe client.exe
-}
+    func_attack(sub_turno_id, context)
 
-attack_sd() {
-    ControlSend, ahk_parent, {f15}, ahk_exe client.exe
-}
-
-attack_frigo_hur() {
-    ControlSend, ahk_parent, {f18}, ahk_exe client.exe
-}
-
-cure_gran_sio() {
-    ControlSend, ahk_parent, {5}, ahk_exe client.exe
-}
-
-cure_sio_rp() {
-    ControlSend, ahk_parent, {4}, ahk_exe client.exe
-}
-
-cure_sio_ek() {
-    ControlSend, ahk_parent, {3}, ahk_exe client.exe
-}
-
-cure_masres() {
-    ControlSend, ahk_parent, {2}, ahk_exe client.exe
-}
-
-cure_vita() {
-    ControlSend, ahk_parent, {9}, ahk_exe client.exe
-    Sleep 10
-    ControlSend, ahk_parent, {1}, ahk_exe client.exe
-}
-
-force_attack(ForceAttack) {
-    switch ForceAttack
-    {
-        case "SD":
-            attack_sd()
-            return
-
-        case "AVALANCHE":
-            attack_avalanche()
-            return
-
-        case "TERA_HUR":
-            attack_terahur()
-            return
-
-        case "FRIGO_HUR":
-            attack_frigo_hur()
-            return
-
-        case "EXEVO_ULU":
-            attack_exevoulu()
-            return
-
-        case "UE":
-            attack_ue()
-            return
-
-        case "MATO":
-            attack_mato()
-            return
-    }
-}
-
-attack(turno, AttackMode, ByRef ForceAttack) {
-    if ForceAttack {
-        force_attack(ForceAttack)
-        ForceAttack := False
-        return
-    }
-
-    ; Select AttackMode
-    if AttackMode {
-        switch AttackMode
-        {
-            case "ROTACAO":
-                if (InStr(turno, "1_") or InStr(turno, "3_"))
-                    attack_terahur()
-                if (InStr(turno, "2_"))
-                    attack_frigo_hur()
-                if (InStr(turno, "4_"))
-                    attack_sd()
-
-            case "TERAHUR_AVALANCHE":
-                if (InStr(turno, "1_") or InStr(turno, "3_"))
-                    attack_avalanche()
-                if (InStr(turno, "2_") or InStr(turno, "4_"))
-                    attack_terahur()
-
-            case "AVALANCHE":
-                attack_avalanche()
-
-            case "SD":
-                attack_sd()
-        }
-    }
-}
-
-force_cure(ForceCura) {
-    switch ForceCura
-    {
-        case "VITA":
-            cure_vita()
-            return
-
-        case "MASRES":
-            cure_masres()
-            return
-
-        case "SIO_EK":
-            cure_sio_ek()
-            return
-
-        case "SIO_RP":
-            cure_sio_rp()
-            return
-
-        case "GRAN_SIO_EK":
-            cure_gran_sio()
-            return
-    }
-}
-
-usar_cura(turno, CuraMode, ByRef ForceCura) {
-
-    ; Modo Force Cura
-    if ForceCura {
-        force_cure(ForceCura)
-        ForceCura := False
-        return
-    }
-
-    ; Select CuraMode
-    if CuraMode {
-        switch CuraMode
-        {
-            case "AUTO_SIO":
-                cure_sio_ek()
+    func_pegar_loot(context)
     
-            case "VITA_MASRES":
-                if (InStr(turno, "_HALF"))
-                    cure_masres()
-                else
-                    cure_vita()
+    sleep 840
+    
+    ; HALF TURNO ###
+    sub_turno_id := turno_id "_HALF"
 
-            case "SIO_MASRES":
-                if (InStr(turno, "_HALF"))
-                    cure_masres()
-                else
-                    cure_sio_ek()
+    func_heal(sub_turno_id, context)
 
-            case "MASRES":
-                if (InStr(turno, "_HALF"))
-                    cure_masres()
+    func_use_mana(sub_turno_id, context)
 
-        }
-    }
+    func_pegar_loot(context)
+
+    sleep 840
 }
 
-; ### LOOP ############################################################
+; #########################################################
 
-f24::  ; Hotkey para começar o script
-
+f24::
+; MsgBox % "select_mode: " context.select_mode "`nheal_mode: " context.heal_mode "`nattack_mode: " context.attack_mode "`nmana_mode" context.mana_mode
 if KeepWinZRunning  ; This means an underlying thread is already running the loop below.
 {
-    ToolTip, OFF
-    SetTimer, RemoveToolTip, -2000
+    ToolTip, OFF, 1615, 680
+    ; SetTimer, RemoveToolTip, -2000
     KeepWinZRunning := false  ; Signal that thread's loop to stop.
     return  ; End this thread so that the one underneath will resume and see the change made by the line above.
 }
 else {
-    ToolTip, ON
-    SetTimer, RemoveToolTip, -2000
+    ToolTip, ON, 1615, 680
+    ; SetTimer, RemoveToolTip, -2000
 }
 
 ; Otherwise:
@@ -499,108 +326,25 @@ KeepWinZRunning := true
 Loop
 {
     ; TURNO 1 ###################################################
-    turno := "1_INIT"
-
-    usar_cura(turno, CuraMode, ForceCura)
-    Sleep 60
+    fn_turno(1, context)
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack(turno, AttackMode, ForceAttack)
-    Sleep 1045
-    if not KeepWinZRunning  ; 
-        break  ; Break out of this loop.
-
-    ; HALF TURNO ###
-    turno := "1_HALF"
-    
-    usar_cura(turno, CuraMode, ForceCura)
-    Sleep 60
-    if not KeepWinZRunning  ;
-        break  ; Break out of this loop.
-        
-    usar_mana(turno, UseMana, ForceMana)
-    Sleep 1045
-    if not KeepWinZRunning  ;
-        break  ; Break out of this loop.
-    
     ; TURNO 2 ###################################################
-    turno := "2_INIT"
-
-    usar_cura(turno, CuraMode, ForceCura)
-    Sleep 60
-    if not KeepWinZRunning  ;
-        break  ; Break out of this loop.
-
-    attack(turno, AttackMode, ForceAttack)
-    Sleep 1045
-    if not KeepWinZRunning  ; 
-        break  ; Break out of this loop.
-
-    ; HALF TURNO ###
-    turno := "2_HALF"
-
-    usar_cura(turno, CuraMode, ForceCura)
-    Sleep 60
-    if not KeepWinZRunning  ;
-        break  ; Break out of this loop.
-
-    usar_mana(turno, UseMana, ForceMana)
-    Sleep 1045
+    fn_turno(2, context)
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
     ; TURNO 3 ###################################################
-    turno := "3_INIT"
-
-    usar_cura(turno, CuraMode, ForceCura)
-    Sleep 60
+    fn_turno(3, context)
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack(turno, AttackMode, ForceAttack)
-    Sleep 1045
-    if not KeepWinZRunning  ; 
-        break  ; Break out of this loop.
-
-    ; HALF TURNO ###
-    turno := "3_HALF"
-
-    usar_cura(turno, CuraMode, ForceCura)
-    Sleep 60
-    if not KeepWinZRunning  ;
-        break  ; Break out of this loop.
-        
-    usar_mana(turno, UseMana, ForceMana)
-    Sleep 1045
-    if not KeepWinZRunning  ;
-        break  ; Break out of this loop.
-    
     ;  TURNO 4 ###################################################
-    turno := "4_INIT"
-
-    usar_cura(turno, CuraMode, ForceCura)
-    Sleep 60
+    fn_turno(4, context)
     if not KeepWinZRunning  ;
         break  ; Break out of this loop.
 
-    attack(turno, AttackMode, ForceAttack)
-    Sleep 1045
-    if not KeepWinZRunning  ; 
-        break  ; Break out of this loop.
-
-    ; HALF TURNO ###
-    turno := "4_HALF"
-
-    usar_cura(turno, CuraMode, ForceCura)
-    Sleep 60
-    if not KeepWinZRunning  ;
-        break  ; Break out of this loop.
-
-    usar_mana(turno, UseMana, ForceMana)
-    Sleep 1045
-    if not KeepWinZRunning  ;
-        break  ; Break out of this loop.
 }
 
 KeepWinZRunning := false  ; Reset in preparation for the next press of this hotkey.
